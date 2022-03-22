@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 
-class DonePage extends StatefulWidget {
-  const DonePage({Key? key}) : super(key: key);
+class WifiPage extends StatefulWidget {
+  const WifiPage({Key? key}) : super(key: key);
 
   @override
-  State<DonePage> createState() => _DonePageState();
+  State<WifiPage> createState() => _WifiPageState();
 }
 
 bool _passwordVisible = false;
 
-class _DonePageState extends State<DonePage> {
+class _WifiPageState extends State<WifiPage> {
   @override
   void initState() {
     super.initState();
@@ -22,7 +22,7 @@ class _DonePageState extends State<DonePage> {
     final Shader linearGradient = LinearGradient(
       colors: <Color>[
         Color.fromARGB(255, 174, 0, 243),
-        Color.fromARGB(255, 231, 134, 231)
+        Color.fromARGB(255, 250, 85, 250)
       ],
     ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
     final Shader linearGradient2 = LinearGradient(
@@ -73,7 +73,6 @@ class _DonePageState extends State<DonePage> {
                             foreground: Paint()..shader = linearGradient2,
                             fontWeight: FontWeight.bold,
                             fontSize: 20)),
-                    autofocus: true,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(

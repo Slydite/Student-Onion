@@ -19,6 +19,18 @@ class _DonePageState extends State<DonePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Shader linearGradient = LinearGradient(
+      colors: <Color>[
+        Color.fromARGB(255, 174, 0, 243),
+        Color.fromARGB(255, 231, 134, 231)
+      ],
+    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+    final Shader linearGradient2 = LinearGradient(
+      colors: <Color>[
+        Color.fromARGB(255, 231, 134, 231),
+        Color.fromARGB(255, 174, 0, 243),
+      ],
+    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
     return Scaffold(
       body: Container(
         alignment: Alignment.topCenter,
@@ -34,7 +46,8 @@ class _DonePageState extends State<DonePage> {
                     padding: const EdgeInsets.all(12.0),
                     child: Text('BITS WiFi Autologin',
                         style: TextStyle(
-                            color: Colors.green,
+                            // color: Colors.white,
+                            foreground: Paint()..shader = linearGradient,
                             fontWeight: FontWeight.bold,
                             fontSize: 30)),
                   ),
@@ -57,7 +70,7 @@ class _DonePageState extends State<DonePage> {
                         hintText: 'Enter your Username',
                         hintStyle: TextStyle(color: Colors.white38),
                         labelStyle: TextStyle(
-                            color: Colors.green,
+                            foreground: Paint()..shader = linearGradient2,
                             fontWeight: FontWeight.bold,
                             fontSize: 20)),
                     autofocus: true,
@@ -82,17 +95,30 @@ class _DonePageState extends State<DonePage> {
                       hintText: 'Enter your password',
                       hintStyle: TextStyle(color: Colors.white38),
                       labelStyle: TextStyle(
-                          color: Colors.green,
+                          foreground: Paint()..shader = linearGradient2,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                       // Here is key idea
                       suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.green,
+                        icon: ShaderMask(
+                          shaderCallback: (bounds) {
+                            return RadialGradient(
+                              center: Alignment.topLeft,
+                              radius: 0.5,
+                              colors: [
+                                Color.fromARGB(255, 174, 0, 243),
+                                Color.fromARGB(255, 231, 134, 231)
+                              ],
+                              tileMode: TileMode.mirror,
+                            ).createShader(bounds);
+                          },
+                          child: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.white,
+                          ),
                         ),
                         onPressed: () {
                           // Update the state i.e. toogle the state of passwordVisible variable
@@ -110,7 +136,7 @@ class _DonePageState extends State<DonePage> {
     );
   }
 }
-//TODO: Add gradient colours
+
 //TODO: Add keyboard enter thingy
 //TODO: Add Save and clear button
 //TODO: Add functionality

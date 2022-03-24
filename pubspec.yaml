@@ -37,11 +37,23 @@ dependencies:
   resize: ^1.0.0
   shrink_sidemenu: ^2.0.0+2-null-safety
   flutter_advanced_drawer: ^1.3.1
+  flutter_launcher_icons: 
+    git:
+      url: https://github.com/Davenchy/flutter_launcher_icons.git
+      ref: fixMinSdkParseFlutter2.8
  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/icon.png"
+  image_path_android: "assets/icon.png"
+  adaptive_icon_background: "assets/background.png"
+  adaptive_icon_foreground: "assets/foreground.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

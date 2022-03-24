@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'wifi_autologin.dart';
+import 'wifi/wifi_ui.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
 int? index = 0;

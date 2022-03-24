@@ -21,23 +21,26 @@ class _HomePageState extends State<HomePage> {
       length: 2,
       child: SafeArea(
           child: AdvancedDrawer(
-        backdropColor: Colors.blueGrey,
+        backdropColor: Color.fromARGB(255, 16, 20, 23),
         controller: _advancedDrawerController,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         animateChildDecoration: true,
         rtlOpening: false,
-        // openScale: 1.0,
+        openRatio: 0.55,
+        //openScale: 1.0,
         disabledGestures: false,
         childDecoration: const BoxDecoration(
           // NOTICE: Uncomment if you want to add shadow behind the page.
           // Keep in mind that it may cause animation jerks.
-          // boxShadow: <BoxShadow>[
-          //   BoxShadow(
-          //     color: Colors.black12,
-          //     blurRadius: 0.0,
-          //   ),
-          // ],
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Color.fromARGB(255, 70, 70, 70),
+              //offset: Offset(4, 4),
+              blurRadius: 15,
+              spreadRadius: 12,
+            ),
+          ],
           borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         child: Scaffold(
@@ -77,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                    width: 128.0,
+                    width: 150.0,
                     height: 128.0,
                     margin: const EdgeInsets.only(
                       top: 24.0,
@@ -85,24 +88,50 @@ class _HomePageState extends State<HomePage> {
                     ),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                      color: Colors.black26,
-                      shape: BoxShape.circle,
+                      color: Color.fromARGB(255, 16, 20, 23),
+                      shape: BoxShape.rectangle,
                     ),
-                    child: Text('Test'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Student\'s Onion',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 217, 0, 255),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30)),
+                    ),
                   ),
-                  ListTile(
-                    onTap: () {
-                      widgetForBody = WifiPage();
-                    },
-                    leading: Icon(Icons.wifi),
-                    title: Text('Wifi AutoLogin'),
-                  ),
-                  ListTile(
-                    onTap: () {},
-                    leading: Icon(Icons.account_circle_rounded),
-                    title: Text('Profile'),
-                  ),
-                  ListTile(
+                  GestureDetector(
+                      onTap: () {
+                        widgetForBody = WifiPage();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(children: [
+                          Icon(Icons.wifi, color: Colors.white),
+                          SizedBox(width: 15),
+                          Text('Wifi AutoLogin',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
+                        ]),
+                      )),
+                  SizedBox(height: 15),
+                  GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(children: [
+                          Icon(Icons.location_pin, color: Colors.white),
+                          SizedBox(width: 15),
+                          Text('Heatmap',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
+                        ]),
+                      )),
+                  /* ListTile(
                     onTap: () {},
                     leading: Icon(Icons.favorite),
                     title: Text('Favourites'),
@@ -111,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {},
                     leading: Icon(Icons.settings),
                     title: Text('Settings'),
-                  ),
+                  ),*/
                   Spacer(),
                   DefaultTextStyle(
                     style: TextStyle(
@@ -122,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                       margin: const EdgeInsets.symmetric(
                         vertical: 16.0,
                       ),
-                      child: Text('Terms of Service | Privacy Policy'),
+                      child: Text('Github'),
                     ),
                   ),
                 ],

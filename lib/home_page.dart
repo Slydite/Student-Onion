@@ -124,9 +124,9 @@ class _HomePageState extends State<HomePage> {
                         child: Row(children: [
                           Icon(Icons.location_pin, color: Colors.white),
                           SizedBox(width: 15),
-                          Text('Heatmap',
+                          Text('Heatmap [In dev]',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.grey,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18)),
                         ]),

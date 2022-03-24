@@ -41,6 +41,10 @@ dependencies:
     git:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
+  flutter_advanced_switch: ^3.0.0+1
+  provider: ^6.0.2
+  shared_preferences: ^2.0.12
+  intl: ^0.17.0
  
 
 dev_dependencies:

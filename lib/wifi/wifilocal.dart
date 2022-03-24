@@ -16,14 +16,22 @@ class SharedPreferencesHelper {
 class Items {
   final String user;
   final String pass;
+  final bool saved;
+  final bool service;
 
-  Items({required this.user, required this.pass});
+  Items(
+      {required this.user,
+      required this.pass,
+      required this.saved,
+      required this.service});
 
   Items.fromMap(Map map)
       : user = map['user'] as String,
-        pass = map['pass'] as String;
+        pass = map['pass'] as String,
+        saved = map['saved'] as bool,
+        service = map['service'] as bool;
   Map toMap() {
-    return {'user': user, 'pass': pass};
+    return {'user': user, 'pass': pass, 'saved': saved, 'service': service};
   }
 }
 

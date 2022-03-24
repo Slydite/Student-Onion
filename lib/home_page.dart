@@ -35,13 +35,13 @@ class _HomePageState extends State<HomePage> {
           // Keep in mind that it may cause animation jerks.
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: Color.fromARGB(255, 70, 70, 70),
+              color: Color.fromARGB(255, 44, 44, 44),
               //offset: Offset(4, 4),
-              blurRadius: 15,
-              spreadRadius: 12,
+              blurRadius: 30,
+              spreadRadius: 18,
             ),
           ],
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
         ),
         child: Scaffold(
             appBar: AppBar(
@@ -79,12 +79,13 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  SizedBox(height: 80),
                   Container(
                     width: 150.0,
                     height: 128.0,
                     margin: const EdgeInsets.only(
                       top: 24.0,
-                      bottom: 64.0,
+                      //bottom: 64.0,
                     ),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(

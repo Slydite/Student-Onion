@@ -18,6 +18,8 @@ bool _passwordVisible = false;
 class _WifiPageState extends State<WifiPage> {
   var userController = TextEditingController();
   var passController = TextEditingController();
+  bool switchEnabled = false;
+  final _controller = ValueNotifier<bool>(false);
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,7 @@ class _WifiPageState extends State<WifiPage> {
       setState(() {
         if (_controller.value) {
           _checked = true;
+          MySharedPreferences.instance.setBooleanValue("service", true);
           if (_isElevated) {
           } else {
             Fluttertoast.showToast(
@@ -40,12 +43,12 @@ class _WifiPageState extends State<WifiPage> {
           }
         } else {
           _checked = false;
+          MySharedPreferences.instance.setBooleanValue("service", false);
         }
       });
     });
   }
 
-  final _controller = ValueNotifier<bool>(false);
   bool _checked = false;
 
   bool _isElevated = false;
@@ -184,8 +187,10 @@ class _WifiPageState extends State<WifiPage> {
                                   MySharedPreferences.instance
                                       .setBooleanValue("saved", true);
                                   print('Values saved');
-                                  print(MySharedPreferences.instance
-                                      .getStringValue("user"));
+                                  MySharedPreferences.instance
+                                      .getStringValue("user")
+                                      .then((v) => print(v + ' user'));
+                                  switchEnabled = true;
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "Error! Please enter Credentials",
@@ -229,12 +234,15 @@ class _WifiPageState extends State<WifiPage> {
                                             .removeValue("pass");
                                         MySharedPreferences.instance
                                             .setBooleanValue("saved", false);
+
                                         userController.text = '';
                                         passController.text = '';
                                         print('removed');
                                         Navigator.pop(context);
                                         setState(() {
                                           _isElevated = false;
+                                          switchEnabled = false;
+                                          _controller.value = false;
                                         });
                                       },
                                     )
@@ -344,7 +352,7 @@ class _WifiPageState extends State<WifiPage> {
                                         const Radius.circular(15)),
                                     width: 65.0,
                                     height: 30.0,
-                                    enabled: true,
+                                    enabled: switchEnabled,
                                     disabledOpacity: 0.5,
                                   ),
                                 ],
@@ -367,5 +375,5 @@ void _login() {}
 
 
 //TODO: Add keyboard enter thingy
-//TODO: Add Scrollability to counter resizing issues
 //TODO: Add functionality
+//TODO: get data on startup

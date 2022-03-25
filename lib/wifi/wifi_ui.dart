@@ -93,6 +93,7 @@ class _WifiPageState extends State<WifiPage> {
                         ),
                         const SizedBox(height: 100),
                         TextFormField(
+                          textInputAction: TextInputAction.next,
                           controller: userController,
                           style: TextStyle(color: Colors.white),
                           keyboardType: TextInputType.text,
@@ -374,6 +375,6 @@ class _WifiPageState extends State<WifiPage> {
 void _login() {}
 
 
-//TODO: Add keyboard enter thingy
+
 //TODO: Add functionality
 //TODO: get data on startup

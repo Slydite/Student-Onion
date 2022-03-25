@@ -49,6 +49,7 @@ dependencies:
   flutter_svg: ^1.0.3
   http: ^0.13.4
   cron: ^0.4.1
+  connectivity_plus: ^2.2.1
  
 
 dev_dependencies:

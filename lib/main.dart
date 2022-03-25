@@ -10,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (await MySharedPreferences.instance.getBooleanValue("service")) {
     var cron = new Cron();
-    cron.schedule(new Schedule.parse('*/1 * * * *'), () async {
+    cron.schedule(new Schedule.parse('*/50-70 * * * *'), () async {
       _login();
     });
   }

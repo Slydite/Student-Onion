@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'wifi/wifi_ui.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 int? index = 0;
 
@@ -12,6 +13,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // example
+
+  final Widget hubicon = SvgPicture.asset(
+    'assets/hubicon.svg',
+  );
   Widget widgetForBody = WifiPage();
   final _advancedDrawerController = AdvancedDrawerController();
   @override
@@ -126,6 +132,21 @@ class _HomePageState extends State<HomePage> {
                           Icon(Icons.location_pin, color: Colors.white),
                           SizedBox(width: 15),
                           Text('Heatmap [In dev]',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
+                        ]),
+                      )),
+                  SizedBox(height: 15),
+                  GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(children: [
+                          hubicon,
+                          SizedBox(width: 15),
+                          Text('DC++ Data [In dev]',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,

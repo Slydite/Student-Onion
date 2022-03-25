@@ -38,7 +38,7 @@ class Items {
 class Credentials with ChangeNotifier {
   List<Items> credentials = [];
 
-  SharedPreferences? sharedPreferences2;
+  SharedPreferences? sharedPreferences;
 
   UnmodifiableListView<Items> get allcategories =>
       UnmodifiableListView(credentials);
@@ -57,7 +57,7 @@ class Credentials with ChangeNotifier {
 
   void initSharedPreferences() async {
     await SharedPreferencesHelper.init();
-    sharedPreferences2 = SharedPreferencesHelper.instance;
+    sharedPreferences = SharedPreferencesHelper.instance;
     loadCredsFromLocalStorage();
     notifyListeners();
   }
@@ -65,12 +65,16 @@ class Credentials with ChangeNotifier {
   void saveCredsToLocalStorage() {
     List<String>? spList2 =
         credentials.map((item) => json.encode(item.toMap())).toList();
-    sharedPreferences2!.setStringList('wificredentials', spList2);
+
+    if (spList2 == null) {
+      spList2 = [];
+    }
+
+    sharedPreferences!.setStringList('wificredentials', spList2);
   }
 
   void loadCredsFromLocalStorage() {
-    List<String>? spList2 =
-        sharedPreferences2!.getStringList('wificredentials');
+    List<String>? spList2 = sharedPreferences!.getStringList('wificredentials');
     if (spList2 != null) {
       credentials =
           spList2.map((item) => Items.fromMap(json.decode(item))).toList();
@@ -78,7 +82,7 @@ class Credentials with ChangeNotifier {
   }
 
   void updateCredsToLocalStorage() {
-    sharedPreferences2!.remove('wificredentials');
+    sharedPreferences!.remove('wificredentials');
     saveCredsToLocalStorage();
   }
 }

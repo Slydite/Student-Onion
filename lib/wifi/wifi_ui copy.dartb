@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+import 'wifilocal.dartb';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'wifisp.dart';
 
 class WifiPage extends StatefulWidget {
   const WifiPage({Key? key}) : super(key: key);
@@ -28,6 +27,12 @@ class _WifiPageState extends State<WifiPage> {
         if (_controller.value) {
           _checked = true;
           if (_isElevated) {
+            Items item = Items(
+                user: userController.text,
+                pass: passController.text,
+                saved: true,
+                service: _checked);
+            Provider.of<Credentials>(context, listen: false).addCred(item);
           } else {
             Fluttertoast.showToast(
                 msg: "Error! Please enter Credentials",
@@ -40,6 +45,24 @@ class _WifiPageState extends State<WifiPage> {
           }
         } else {
           _checked = false;
+
+          if (_isElevated) {
+            Items item = Items(
+                user: userController.text,
+                pass: passController.text,
+                saved: true,
+                service: _checked);
+            Provider.of<Credentials>(context, listen: false).addCred(item);
+          } else {
+            Fluttertoast.showToast(
+                msg: "Error! Please enter Credentials",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
         }
       });
     });
@@ -64,9 +87,9 @@ class _WifiPageState extends State<WifiPage> {
       ],
     ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
+    return Consumer<Credentials>(builder: (context, state, child) {
+      return Scaffold(
+        body: Container(
           alignment: Alignment.topCenter,
           child: SizedBox(
               height: 95.vh,
@@ -173,81 +196,30 @@ class _WifiPageState extends State<WifiPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (_isElevated == false) {
-                                if (userController.text != '' &&
-                                    passController.text != '') {
-                                  _isElevated = !_isElevated;
-                                  MySharedPreferences.instance.setStringValue(
-                                      "user", userController.text);
-                                  MySharedPreferences.instance.setStringValue(
-                                      "pass", passController.text);
-                                  MySharedPreferences.instance
-                                      .setBooleanValue("saved", true);
-                                  print('Values saved');
-                                  print(MySharedPreferences.instance
-                                      .getStringValue("user"));
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: "Error! Please enter Credentials",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }
-                              } else {
-                                AlertDialog alert = AlertDialog(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 19, 18, 20),
-                                  title: const Text('Delete Credentials',
-                                      style: TextStyle(color: Colors.white)),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  content: Text(
-                                      "Are you sure you want to delete your credential data?",
-                                      style: TextStyle(color: Colors.white)),
-                                  actions: [
-                                    FlatButton(
-                                      child: Text("Cancel",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        print('cancel');
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text("Confirm",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      onPressed: () {
-                                        MySharedPreferences.instance
-                                            .removeValue("user");
-                                        MySharedPreferences.instance
-                                            .removeValue("pass");
-                                        MySharedPreferences.instance
-                                            .setBooleanValue("saved", false);
-                                        userController.text = '';
-                                        passController.text = '';
-                                        print('removed');
-                                        Navigator.pop(context);
-                                        setState(() {
-                                          _isElevated = false;
-                                        });
-                                      },
-                                    )
-                                  ],
-                                );
+                              
 
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return alert;
-                                  },
-                                );
-                              }
+
+if (userController.text!='' && passController.text!='') {
+          
+          
+            Items item = Items(
+                user: userController.text,
+                pass: passController.text,
+                saved: true,
+                service: _checked);
+            Provider.of<Credentials>(context, listen: false).addCred(item);
+            _isElevated = !_isElevated;
+          } else {
+            Fluttertoast.showToast(
+                msg: "Error! Please enter Credentials",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+
                             });
                           },
                           child: AnimatedContainer(
@@ -312,9 +284,7 @@ class _WifiPageState extends State<WifiPage> {
                             ),
                             ElevatedButton(
                               // <-- ElevatedButton
-                              onPressed: () {
-                                _login();
-                              },
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 primary: Color.fromARGB(255, 30, 35, 38),
                               ),
@@ -358,8 +328,8 @@ class _WifiPageState extends State<WifiPage> {
                 ],
               )),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -367,5 +337,5 @@ void _login() {}
 
 
 //TODO: Add keyboard enter thingy
-//TODO: Add Scrollability to counter resizing issues
+//TODO: Add Save and clear button
 //TODO: Add functionality

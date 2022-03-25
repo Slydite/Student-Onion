@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
-import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:http/http.dart' as http;
 import 'wifisp.dart';
 
 class WifiPage extends StatefulWidget {
@@ -20,9 +19,31 @@ class _WifiPageState extends State<WifiPage> {
   var passController = TextEditingController();
   bool switchEnabled = false;
   final _controller = ValueNotifier<bool>(false);
+
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance
+        .getStringValue("user")
+        .then((value) => setState(() {
+              userController.text = value;
+            }));
+    MySharedPreferences.instance
+        .getStringValue("pass")
+        .then((value) => setState(() {
+              passController.text = value;
+            }));
+    MySharedPreferences.instance
+        .getBooleanValue("save")
+        .then((value) => setState(() {
+              _isElevated = !value;
+            }));
+    MySharedPreferences.instance
+        .getBooleanValue("service")
+        .then((value2) => setState(() {
+              _controller.value = value2;
+            }));
+
     _passwordVisible = false;
 
     _controller.addListener(() {
@@ -52,6 +73,7 @@ class _WifiPageState extends State<WifiPage> {
   bool _checked = false;
 
   bool _isElevated = false;
+
   @override
   Widget build(BuildContext context) {
     final Shader linearGradient = LinearGradient(
@@ -372,9 +394,38 @@ class _WifiPageState extends State<WifiPage> {
   }
 }
 
-void _login() {}
+void _login() async {
+  String user = await MySharedPreferences.instance.getStringValue("user");
+  String pass = await MySharedPreferences.instance.getStringValue("pass");
+  bool auto = await MySharedPreferences.instance.getBooleanValue("service");
+
+  //user = Uri.encodeComponent(user);
+  //pass = Uri.encodeComponent(pass);
+  print(user + pass);
+  print(auto);
+
+  var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+  var request = http.Request(
+      'POST', Uri.parse('https://fw.bits-pilani.ac.in:8090/httpclient.html'));
+  request.bodyFields = {
+    'username': user,
+    'password': pass,
+    'mode': '191',
+    'producttype': '0',
+    'a': '1647846888240'
+  };
+  request.headers.addAll(headers);
+
+  http.StreamedResponse response = await request.send();
+
+  if (response.statusCode == 200) {
+    print(await response.stream.bytesToString());
+  } else {
+    print(response.reasonPhrase);
+    print('object');
+  }
+}
 
 
 
 //TODO: Add functionality
-//TODO: get data on startup

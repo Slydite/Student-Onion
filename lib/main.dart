@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 //import 'package:student_onion/wifi/wifilocal.dartb';
 import 'home_page.dart';
 import 'package:resize/resize.dart';
-import 'package:provider/provider.dart';
+import 'wifi/wifisp.dart';
+import 'package:cron/cron.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (await MySharedPreferences.instance.getBooleanValue("service")) {
+    var cron = new Cron();
+    cron.schedule(new Schedule.parse('*/1 * * * *'), () async {
+      _login();
+    });
+  }
   runApp(const MyApp());
 }
 
@@ -39,5 +47,37 @@ class MyApp extends StatelessWidget {
         home: const HomePage(),
       );
     });
+  }
+}
+
+void _login() async {
+  String user = await MySharedPreferences.instance.getStringValue("user");
+  String pass = await MySharedPreferences.instance.getStringValue("pass");
+  bool auto = await MySharedPreferences.instance.getBooleanValue("service");
+
+  //user = Uri.encodeComponent(user);
+  //pass = Uri.encodeComponent(pass);
+  print(user + pass);
+  print(auto);
+
+  var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+  var request = http.Request(
+      'POST', Uri.parse('https://fw.bits-pilani.ac.in:8090/httpclient.html'));
+  request.bodyFields = {
+    'username': user,
+    'password': pass,
+    'mode': '191',
+    'producttype': '0',
+    'a': '1647846888240'
+  };
+  request.headers.addAll(headers);
+
+  http.StreamedResponse response = await request.send();
+
+  if (response.statusCode == 200) {
+    print(await response.stream.bytesToString());
+  } else {
+    print(response.reasonPhrase);
+    print('object');
   }
 }

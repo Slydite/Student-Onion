@@ -115,6 +115,7 @@ class _WifiPageState extends State<WifiPage> {
                         ),
                         const SizedBox(height: 100),
                         TextFormField(
+                          enabled: !_isElevated,
                           textInputAction: TextInputAction.next,
                           controller: userController,
                           style: TextStyle(color: Colors.white),
@@ -140,6 +141,7 @@ class _WifiPageState extends State<WifiPage> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          enabled: !_isElevated,
                           controller: passController,
                           style: TextStyle(color: Colors.white),
                           keyboardType: TextInputType.text,
@@ -425,7 +427,3 @@ void _login() async {
     print('object');
   }
 }
-
-
-
-//TODO: Add functionality

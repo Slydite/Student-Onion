@@ -4,6 +4,7 @@ import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'wifisp.dart';
+import "dart:math";
 
 class WifiPage extends StatefulWidget {
   const WifiPage({Key? key}) : super(key: key);
@@ -17,12 +18,29 @@ bool _passwordVisible = false;
 class _WifiPageState extends State<WifiPage> {
   var userController = TextEditingController();
   var passController = TextEditingController();
-  bool switchEnabled = false;
+  // bool switchEnabled = false;
   final _controller = ValueNotifier<bool>(false);
+  int appStarts = 0;
+  bool _checked = false;
 
+  bool _isElevated = false;
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance
+        .getStringValue("appStarts")
+        .then((value) => setState(() {
+              appStarts = int.parse(value) + 1;
+              MySharedPreferences.instance
+                  .setStringValue("appStarts", appStarts.toString());
+            }));
+    if (appStarts == 0) {
+      MySharedPreferences.instance
+          .setBooleanValue("save", false)
+          .then((value) => setState(() {
+                _isElevated = !value;
+              }));
+    }
     MySharedPreferences.instance
         .getStringValue("user")
         .then((value) => setState(() {
@@ -69,10 +87,6 @@ class _WifiPageState extends State<WifiPage> {
       });
     });
   }
-
-  bool _checked = false;
-
-  bool _isElevated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +148,16 @@ class _WifiPageState extends State<WifiPage> {
                               labelText: 'Username',
                               hintText: 'Enter your Username',
                               hintStyle: TextStyle(color: Colors.white38),
-                              labelStyle: TextStyle(
-                                  foreground: Paint()..shader = linearGradient2,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20)),
+                              labelStyle: !_isElevated
+                                  ? TextStyle(
+                                      foreground: Paint()
+                                        ..shader = linearGradient2,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)
+                                  : TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -162,10 +182,16 @@ class _WifiPageState extends State<WifiPage> {
                             labelText: 'Password',
                             hintText: 'Enter your password',
                             hintStyle: TextStyle(color: Colors.white38),
-                            labelStyle: TextStyle(
-                                foreground: Paint()..shader = linearGradient2,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                            labelStyle: !_isElevated
+                                ? TextStyle(
+                                    foreground: Paint()
+                                      ..shader = linearGradient2,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20)
+                                : TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
                             // Here is key idea
                             suffixIcon: IconButton(
                               icon: ShaderMask(
@@ -173,10 +199,12 @@ class _WifiPageState extends State<WifiPage> {
                                   return RadialGradient(
                                     center: Alignment.topLeft,
                                     radius: 0.5,
-                                    colors: [
-                                      Color.fromARGB(255, 174, 0, 243),
-                                      Color.fromARGB(255, 231, 134, 231)
-                                    ],
+                                    colors: _isElevated
+                                        ? [Colors.grey, Colors.grey]
+                                        : [
+                                            Color.fromARGB(255, 174, 0, 243),
+                                            Color.fromARGB(255, 231, 134, 231)
+                                          ],
                                     tileMode: TileMode.mirror,
                                   ).createShader(bounds);
                                 },
@@ -215,7 +243,6 @@ class _WifiPageState extends State<WifiPage> {
                                   MySharedPreferences.instance
                                       .getStringValue("user")
                                       .then((v) => print(v + ' user'));
-                                  switchEnabled = true;
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "Error! Please enter Credentials",
@@ -239,7 +266,7 @@ class _WifiPageState extends State<WifiPage> {
                                       "Are you sure you want to delete your credential data?",
                                       style: TextStyle(color: Colors.white)),
                                   actions: [
-                                    FlatButton(
+                                    TextButton(
                                       child: Text("Cancel",
                                           style:
                                               TextStyle(color: Colors.white)),
@@ -248,7 +275,7 @@ class _WifiPageState extends State<WifiPage> {
                                         print('cancel');
                                       },
                                     ),
-                                    FlatButton(
+                                    TextButton(
                                       child: Text("Confirm",
                                           style:
                                               TextStyle(color: Colors.white)),
@@ -266,7 +293,7 @@ class _WifiPageState extends State<WifiPage> {
                                         Navigator.pop(context);
                                         setState(() {
                                           _isElevated = false;
-                                          switchEnabled = false;
+
                                           _controller.value = false;
                                         });
                                       },
@@ -330,6 +357,16 @@ class _WifiPageState extends State<WifiPage> {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            _isElevated
+                                ? 'To edit credentials, press Delete'
+                                : '',
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -377,7 +414,7 @@ class _WifiPageState extends State<WifiPage> {
                                         const Radius.circular(15)),
                                     width: 65.0,
                                     height: 30.0,
-                                    enabled: switchEnabled,
+                                    enabled: _isElevated,
                                     disabledOpacity: 0.5,
                                   ),
                                 ],
@@ -399,31 +436,131 @@ class _WifiPageState extends State<WifiPage> {
 void _login() async {
   String user = await MySharedPreferences.instance.getStringValue("user");
   String pass = await MySharedPreferences.instance.getStringValue("pass");
-  bool auto = await MySharedPreferences.instance.getBooleanValue("service");
 
-  //user = Uri.encodeComponent(user);
-  //pass = Uri.encodeComponent(pass);
-  print(user + pass);
-  print(auto);
-
+  print('Running login');
+  var list = [
+    'https://fw.bits-pilani.ac.in:8090/httpclient.html',
+    //'https://fw.bits-pilani.ac.in:8091/httpclient.html'
+  ];
+  final _random = new Random();
+  var element = list[_random.nextInt(list.length)];
   var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-  var request = http.Request(
-      'POST', Uri.parse('https://fw.bits-pilani.ac.in:8090/httpclient.html'));
+  var request = http.Request('POST', Uri.parse(element));
   request.bodyFields = {
     'username': user,
     'password': pass,
     'mode': '191',
     'producttype': '0',
-    'a': '1647846888240'
+    'a': DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
   };
+  print(DateTime.now().toUtc().millisecondsSinceEpoch.toString());
   request.headers.addAll(headers);
+  //http.StreamedResponse response = await request.send();
 
-  http.StreamedResponse response = await request.send();
+  String success =
+      await "<?xml version='1.0' ?><requestresponse><status><![CDATA[LIVE]]></status><message><![CDATA[You are signed in as {username}]]></message><logoutmessage><![CDATA[You have successfully logged off]]></logoutmessage><state><![CDATA[]]></state></requestresponse> \n";
+  request.headers.addAll(headers);
+  try {
+    http.StreamedResponse response =
+        await request.send().timeout(const Duration(seconds: 5));
 
-  if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
-  } else {
-    print(response.reasonPhrase);
-    print('object');
+    if (response.statusCode == 200) {
+      String pp = await response.stream.bytesToString();
+      print(pp);
+      print(success);
+      print(pp == success);
+      // print(identical(pp, success));
+      if (pp == success) {
+        Fluttertoast.showToast(
+            msg: "Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error, couldn't login. Check Credentials.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } else {
+      print(response.reasonPhrase);
+      print('object');
+      Fluttertoast.showToast(
+          msg: "Error!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  } catch (_) {
+    Fluttertoast.showToast(
+        msg: "Error! Probably a Timeout/SocketException",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
+  /*try {
+    http.StreamedResponse response =
+        await request.send().timeout(const Duration(seconds: 5));
+
+    print(response.stream.bytesToString());
+    if (response.statusCode == 200) {
+      if (response.stream.bytesToString() == success) {
+        print(response.reasonPhrase);
+        print('1');
+        Fluttertoast.showToast(
+            msg: "Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        print(await response.stream.bytesToString());
+        Fluttertoast.showToast(
+            msg: "Error!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        print('2');
+      }
+    } else {
+      print(response.reasonPhrase);
+      print('1');
+      Fluttertoast.showToast(
+          msg: "Success!2",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+  //  }
+ // } catch (_) {
+    Fluttertoast.showToast(
+        msg: "Error! Probably a Timeout/SocketException",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+}*/
 }

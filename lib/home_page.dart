@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(children: [
                           Icon(Icons.location_pin, color: Colors.white),
                           SizedBox(width: 15),
-                          Text('Heatmap [In dev]',
+                          Text('Coming Soon!',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
@@ -144,9 +144,12 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(children: [
-                          hubicon,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: hubicon,
+                          ),
                           SizedBox(width: 15),
-                          Text('DC++ Data [In dev]',
+                          Text('Coming Soon!',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,

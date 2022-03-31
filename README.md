@@ -8,7 +8,7 @@ Use this app to login into BITS-STUDENT networks easier, view **~~redacted~~** a
 Currently the app is in Alpha, only wifi login is available, more will be out soon.
 
 
-(Note that this app is completely unrelated to the Student Union(completely unrelated) or the Coding club(which I am a part of). This is just a personal project for learning.)
+
 
 
 
@@ -31,9 +31,6 @@ A. My Adobe Illustrator skills aren't the best, you are free to contribute bette
 
 #### Q. THE TEXT FIELDS ARE DISABLED WHAAAAAAAAAAAAAAAAAAAAAAAAAAAT???!???!?????????
 A. Too lazy to fix, just press delete and they will be enabled.
-
-#### Q. Are you scared that the Student Union wouldn't like you using their name?
-A. *somewhat*
 
 #### Q.When are new features coming out?
 A. Next feature will probably come out in the next 3-4 weeks. But with compres near, it might take longer.

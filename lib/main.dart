@@ -5,6 +5,8 @@ import 'package:resize/resize.dart';
 import 'wifi/wifisp.dart';
 import 'package:cron/cron.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,8 @@ void main() async {
       _login();
     });
   }
+  Firebase.initializeApp();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   runApp(const MyApp());
 }
 

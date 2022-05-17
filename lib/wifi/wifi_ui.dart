@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'wifisp.dart';
 import "dart:math";
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class WifiPage extends StatefulWidget {
   const WifiPage({Key? key}) : super(key: key);
@@ -61,7 +63,7 @@ class _WifiPageState extends State<WifiPage> {
         .then((value2) => setState(() {
               _controller.value = value2;
             }));
-
+    _analytics();
     _passwordVisible = false;
 
     _controller.addListener(() {
@@ -431,6 +433,12 @@ class _WifiPageState extends State<WifiPage> {
       ),
     );
   }
+}
+
+void _analytics() async {
+  Firebase.initializeApp();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  await FirebaseAnalytics.instance.setCurrentScreen(screenName: 'Wifi');
 }
 
 void _login() async {

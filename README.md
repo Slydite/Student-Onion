@@ -1,16 +1,43 @@
-# student_onion
 
-A new Flutter project.
+<img src="https://images.weserv.nl/?url=raw.githubusercontent.com/Slydite/Student-Onion/master/assets/SO%20256.png?v=4&h=64&w=64&fit=cover&mask=circle&maxage=7d"> 
 
-## Getting Started
+# Student's Onion
 
-This project is a starting point for a Flutter application.
+Use this app to login into BITS-STUDENT networks easier, view **~~redacted~~** and **~~redacted~~** and more.
 
-A few resources to get you started if this is your first Flutter project:
+Currently the app is in Alpha, only wifi login is available, more will be out soon.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+
+
+
+
+
+
+
+# FAQ
+
+#### Q. Why is it named Student's Onion?
+A. For shits and giggles. It was very funny at the time.
+
+#### Q. Are you related to the Student Union?
+A. Nope, this app is completely unrelated to them.
+
+#### Q. Why is the logo so bad(good)?
+A. My Adobe Illustrator skills aren't the best, you are free to contribute better logos.
+
+#### Q. THE TEXT FIELDS ARE DISABLED WHAAAAAAAAAAAAAAAAAAAAAAAAAAAT???!???!?????????
+A. Too lazy to fix, just press delete and they will be enabled.
+
+#### Q.When are new features coming out?
+A. Next feature will probably come out in the next 3-4 weeks. But with compres near, it might take longer.
+
+#### Q. How do I contribute?
+A. DM me if for some reason you want to touch this retarded nonsense.
+
+# 
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.

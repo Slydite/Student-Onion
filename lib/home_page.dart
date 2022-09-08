@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(children: [
                           Icon(Icons.location_pin, color: Colors.white),
                           SizedBox(width: 15),
-                          Text('Coming Soon!',
+                          Text('[Coming Soon]',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
@@ -139,33 +139,24 @@ class _HomePageState extends State<HomePage> {
                         ]),
                       )),
                   SizedBox(height: 15),
-                  GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: hubicon,
-                          ),
-                          SizedBox(width: 15),
-                          Text('Coming Soon!',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18)),
-                        ]),
-                      )),
-                  /* ListTile(
-                    onTap: () {},
-                    leading: Icon(Icons.favorite),
-                    title: Text('Favourites'),
-                  ),
-                  ListTile(
-                    onTap: () {},
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
-                  ),*/
+                  // GestureDetector(
+                  //     onTap: () {},
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(10.0),
+                  //       child: Row(children: [
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(horizontal: 2),
+                  //           child: hubicon,
+                  //         ),
+                  //         SizedBox(width: 15),
+                  //         Text('Coming Soon!',
+                  //             style: TextStyle(
+                  //                 color: Colors.grey,
+                  //                 fontWeight: FontWeight.bold,
+                  //                 fontSize: 18)),
+                  //       ]),
+                  //     )),
+
                   Spacer(),
                   DefaultTextStyle(
                     style: TextStyle(

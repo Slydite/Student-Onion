@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_onion/firebase_options.dart';
 //import 'package:student_onion/wifi/wifilocal.dartb';
 import 'home_page.dart';
 import 'package:resize/resize.dart';
@@ -10,16 +11,21 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (await MySharedPreferences.instance.getBooleanValue("service")) {
-    var cron = new Cron();
-    cron.schedule(new Schedule.parse('*/50-70 * * * *'), () async {
-      _login();
-    });
-  }
-  Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  runApp(const MyApp());
+  runApp(MyApp());
 }
+
+// if (await MySharedPreferences.instance.getBooleanValue("service")) {
+//   var cron = new Cron();
+//   cron.schedule(new Schedule.parse('*/50-70 * * * *'), () async {
+//     _login();
+//   });
+// }
+
+//
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

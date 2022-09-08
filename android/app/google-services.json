@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "338211521114",
+    "project_id": "student-onion",
+    "storage_bucket": "student-onion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338211521114:android:cd454cbe47c024d4290e63",
+        "android_client_info": {
+          "package_name": "com.example.student_onion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338211521114-3ucnh505mase9r7c5r299q8tfi8mjb8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSygTrIAabRjDoZJBHe3eZhhOWBFN1sbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338211521114-3ucnh505mase9r7c5r299q8tfi8mjb8n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "338211521114-hcr4olkuo4td69s6raa6nq8cr50t3843.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.slydite.studentonion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

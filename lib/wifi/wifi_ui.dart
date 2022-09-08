@@ -15,7 +15,7 @@ class WifiPage extends StatefulWidget {
   State<WifiPage> createState() => _WifiPageState();
 }
 
-bool _passwordVisible = false;
+bool _passwordVisible = true;
 
 class _WifiPageState extends State<WifiPage> {
   var userController = TextEditingController();
@@ -23,26 +23,36 @@ class _WifiPageState extends State<WifiPage> {
   // bool switchEnabled = false;
   final _controller = ValueNotifier<bool>(false);
   int appStarts = 0;
-  bool _checked = false;
 
-  bool _isElevated = false;
+  bool _isDisabled = true;
+
   @override
   void initState() {
+    _isDisabled = false;
+    print("1) IT IS FALSE");
     super.initState();
     MySharedPreferences.instance
         .getStringValue("appStarts")
         .then((value) => setState(() {
-              appStarts = int.parse(value) + 1;
+              if (value == '') {
+                appStarts = 1;
+              } else {
+                appStarts = int.parse(value) + 1;
+              }
+              print("The value is" + appStarts.toString());
               MySharedPreferences.instance
                   .setStringValue("appStarts", appStarts.toString());
             }));
-    if (appStarts == 0) {
-      MySharedPreferences.instance
-          .setBooleanValue("save", false)
-          .then((value) => setState(() {
-                _isElevated = !value;
-              }));
-    }
+    print(appStarts);
+    // if (appStarts == 0) {
+    //   print("Why is this running");
+    //   MySharedPreferences.instance
+    //       .setBooleanValue("save", false)
+    //       .then((value) => setState(() {
+    //             _isDisabled = false;
+    //             print("2) IT IS FALSE");
+    //           }));
+    // }
     MySharedPreferences.instance
         .getStringValue("user")
         .then((value) => setState(() {
@@ -54,9 +64,10 @@ class _WifiPageState extends State<WifiPage> {
               passController.text = value;
             }));
     MySharedPreferences.instance
-        .getBooleanValue("save")
+        .getBooleanValue("saved")
         .then((value) => setState(() {
-              _isElevated = !value;
+              _isDisabled = value;
+              print("3) IT IS " + _isDisabled.toString());
             }));
     MySharedPreferences.instance
         .getBooleanValue("service")
@@ -69,9 +80,8 @@ class _WifiPageState extends State<WifiPage> {
     _controller.addListener(() {
       setState(() {
         if (_controller.value) {
-          _checked = true;
           MySharedPreferences.instance.setBooleanValue("service", true);
-          if (_isElevated) {
+          if (_isDisabled) {
           } else {
             Fluttertoast.showToast(
                 msg: "Error! Please enter Credentials",
@@ -83,7 +93,6 @@ class _WifiPageState extends State<WifiPage> {
                 fontSize: 16.0);
           }
         } else {
-          _checked = false;
           MySharedPreferences.instance.setBooleanValue("service", false);
         }
       });
@@ -131,7 +140,7 @@ class _WifiPageState extends State<WifiPage> {
                         ),
                         const SizedBox(height: 100),
                         TextFormField(
-                          enabled: !_isElevated,
+                          enabled: !_isDisabled,
                           textInputAction: TextInputAction.next,
                           controller: userController,
                           style: TextStyle(color: Colors.white),
@@ -150,7 +159,7 @@ class _WifiPageState extends State<WifiPage> {
                               labelText: 'Username',
                               hintText: 'Enter your Username',
                               hintStyle: TextStyle(color: Colors.white38),
-                              labelStyle: !_isElevated
+                              labelStyle: !_isDisabled
                                   ? TextStyle(
                                       foreground: Paint()
                                         ..shader = linearGradient2,
@@ -163,7 +172,7 @@ class _WifiPageState extends State<WifiPage> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          enabled: !_isElevated,
+                          enabled: !_isDisabled,
                           controller: passController,
                           style: TextStyle(color: Colors.white),
                           keyboardType: TextInputType.text,
@@ -184,7 +193,7 @@ class _WifiPageState extends State<WifiPage> {
                             labelText: 'Password',
                             hintText: 'Enter your password',
                             hintStyle: TextStyle(color: Colors.white38),
-                            labelStyle: !_isElevated
+                            labelStyle: !_isDisabled
                                 ? TextStyle(
                                     foreground: Paint()
                                       ..shader = linearGradient2,
@@ -201,7 +210,7 @@ class _WifiPageState extends State<WifiPage> {
                                   return RadialGradient(
                                     center: Alignment.topLeft,
                                     radius: 0.5,
-                                    colors: _isElevated
+                                    colors: _isDisabled
                                         ? [Colors.grey, Colors.grey]
                                         : [
                                             Color.fromARGB(255, 174, 0, 243),
@@ -231,10 +240,11 @@ class _WifiPageState extends State<WifiPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (_isElevated == false) {
+                              if (_isDisabled == false) {
                                 if (userController.text != '' &&
                                     passController.text != '') {
-                                  _isElevated = !_isElevated;
+                                  _isDisabled = !_isDisabled;
+                                  print("6) IT IS" + _isDisabled.toString());
                                   MySharedPreferences.instance.setStringValue(
                                       "user", userController.text);
                                   MySharedPreferences.instance.setStringValue(
@@ -294,8 +304,9 @@ class _WifiPageState extends State<WifiPage> {
                                         print('removed');
                                         Navigator.pop(context);
                                         setState(() {
-                                          _isElevated = false;
-
+                                          _isDisabled = false;
+                                          print("7) IT IS" +
+                                              _isDisabled.toString());
                                           _controller.value = false;
                                         });
                                       },
@@ -323,7 +334,7 @@ class _WifiPageState extends State<WifiPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  _isElevated
+                                  _isDisabled
                                       ? Text('Delete',
                                           style: TextStyle(
                                               color: Colors.red,
@@ -340,7 +351,7 @@ class _WifiPageState extends State<WifiPage> {
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 30, 35, 38),
                               borderRadius: BorderRadius.circular(50),
-                              boxShadow: !_isElevated
+                              boxShadow: !_isDisabled
                                   ? [
                                       const BoxShadow(
                                         color: Colors.white,
@@ -362,7 +373,7 @@ class _WifiPageState extends State<WifiPage> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            _isElevated
+                            _isDisabled
                                 ? 'To edit credentials, press Delete'
                                 : '',
                             style: TextStyle(color: Colors.white),
@@ -396,30 +407,34 @@ class _WifiPageState extends State<WifiPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 60.vw,
-                                    child: Text('AutoLogin Service',
-                                        style: TextStyle(color: Colors.white)),
-                                  ),
-                                  //SizedBox(width: 10),
-                                  AdvancedSwitch(
-                                    controller: _controller,
-                                    activeColor: Colors.blue,
-                                    inactiveColor: Colors.grey,
-                                    activeChild: Text('ON'),
-                                    inactiveChild: Text('OFF'),
-                                    borderRadius: BorderRadius.all(
-                                        const Radius.circular(15)),
-                                    width: 65.0,
-                                    height: 30.0,
-                                    enabled: _isElevated,
-                                    disabledOpacity: 0.5,
-                                  ),
-                                ],
+                              child: SizedBox(
+                                width: 240.vw,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: 60.vw,
+                                      child: Text('AutoLogin Service',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    ),
+                                    //SizedBox(width: 10),
+                                    AdvancedSwitch(
+                                      controller: _controller,
+                                      activeColor: Colors.blue,
+                                      inactiveColor: Colors.grey,
+                                      activeChild: Text('ON'),
+                                      inactiveChild: Text('OFF'),
+                                      borderRadius: BorderRadius.all(
+                                          const Radius.circular(15)),
+                                      width: 65.0,
+                                      height: 30.0,
+                                      enabled: false, //_isDisabled,
+                                      disabledOpacity: 0.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
